@@ -1,27 +1,35 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
-const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
-]
+
+const originalPush = VueRouter.prototype.push;
+
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch((err) => err);
+};
 
 const router = new VueRouter({
-  routes
-})
+  routes: [
+    
+  ],
+});
 
-export default router
+// 挂载路由前置守卫
+/* router.beforeEach((to, from, next) => {
+  //首先判断用户是否已经登录
+  const token = JSON.parse(window.sessionStorage.getItem("token"));
+  if (to.path !== "/login") {
+    if (token) {
+      //已经登录
+      next();
+    } else {
+      next("/login");
+    }
+  } else {
+    next();
+  }
+}); */
+
+export default router;
