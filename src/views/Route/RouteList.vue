@@ -1,39 +1,61 @@
 <template>
-  <el-card shadow="never" v-if="$route.path === '/bus'">
+  <el-card shadow="never" v-if="$route.path === '/busroute'">
     <div slot="header" class="cardHeader">
-      <span>公交列表</span>
+      <span>线路列表</span>
       <el-button
         type="primary"
         size="small"
-        @click="$router.push('/bus/create')"
-        >创建公交</el-button
+        @click="$router.push('/busroute/create')"
+        >创建线路</el-button
       >
     </div>
-    <div class="busList">
-      <el-table :data="busList" fit border stripe :highlight-current-row="true">
+    <div class="routeList">
+      <el-table
+        :data="routeList"
+        fit
+        border
+        stripe
+        :highlight-current-row="true"
+      >
         <el-table-column type="index" width="50" align="center" />
-        <el-table-column label="公交名称" align="center">
+        <el-table-column label="线路公交" align="center">
           <template v-slot="scope">
             <el-tooltip
               effect="light"
-              :content="'编号:' + scope.row.busId.toString()"
+              :content="'线路编号:' + scope.row.routeId.toString()"
               placement="top"
             >
-              <span>{{ scope.row.busName }}</span>
+              <span>{{ scope.row.bus.busName }}</span>
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column label="公交类型" align="center">
-          <template v-slot="scope">
-            {{ scope.row.type | busTypeFormat }}
-          </template>
+        <el-table-column label="花费" align="center" width="100">
+          <template v-slot="scope"> {{ scope.row.cost }}元 </template>
         </el-table-column>
         <el-table-column label="所在城市" align="center">
           <template v-slot="scope">
-            {{ scope.row.cityCode | cityFormat }}
+            {{ scope.row.bus?.cityCode | cityFormat }}
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" align="center">
+        <el-table-column label="运行时间" align="center">
+          <template v-slot="scope">
+            {{ scope.row.timeRange }}
+          </template>
+        </el-table-column>
+        <el-table-column label="发车间隔" align="center" width="100">
+          <template v-slot="scope"> {{ scope.row.busInterval }}分钟 </template>
+        </el-table-column>
+        <el-table-column label="夜间行车" align="center" width="100">
+          <template v-slot="scope">
+            {{ scope.row.isNight ? "是" : "否" }}
+          </template>
+        </el-table-column>
+        <el-table-column label="环线行驶" align="center" width="100">
+          <template v-slot="scope">
+            {{ scope.row.isCircle ? "是" : "否" }}
+          </template>
+        </el-table-column>
+        <el-table-column label="创建时间" align="center" width="120">
           <template v-slot="scope">
             {{ scope.row.createTime | dateFormat }}
           </template>
@@ -43,17 +65,17 @@
             <el-button
               size="mini"
               type="primary"
-              style="margin-right: 10px"
-              @click="$router.push(`/bus/edit/${scope.row.busId}`)"
-              >更新</el-button
+              @click="$router.push(`/busroute/edit/${scope.row.routeId}`)"
+              >更新信息</el-button
             >
             <el-popconfirm
               confirm-button-text="是滴"
               cancel-button-text="点错了"
               icon="el-icon-warning"
               icon-color="red"
-              title="确定删除该公交?"
-              @confirm="deleteBusById(scope.row.busId)"
+              title="确定删除该线路?"
+              style="margin-left: 10px"
+              @confirm="deleteRouteById(scope.row.routeId)"
             >
               <el-button slot="reference" size="mini" type="danger"
                 >删除</el-button
@@ -75,6 +97,7 @@
         >
         </el-pagination>
       </div>
+      <router-view />
     </div>
   </el-card>
   <router-view v-else />
@@ -82,11 +105,11 @@
 
 <script>
 export default {
-  name: "BusList",
+  name: "RouteList",
   data() {
     return {
-      //公交信息列表
-      busList: [],
+      //线路信息列表
+      routeList: [],
       //分页对象
       page: {
         pageNumber: 1,
@@ -97,62 +120,62 @@ export default {
   },
   watch: {
     $route() {
-      this.getBusListPage();
+      this.getRouteListPage();
     },
   },
   methods: {
-    //分页获取公交信息列表
-    async getBusListPage() {
-      this.getBusCount();
-      const { data: busListRes } = await this.$axios.get("bus/list", {
+    //分页获取线路信息列表
+    async getRouteListPage() {
+      this.getRouteCount();
+      const { data: routeListRes } = await this.$axios.get("route/list", {
         params: {
           currentPage: this.page.pageNumber,
           pageSize: this.page.pageSize,
         },
       });
-      this.busList = busListRes.data;
+      this.routeList = routeListRes.data;
     },
 
-    //获取公交总数量
-    async getBusCount() {
-      const { data: busCountRes } = await this.$axios.get("bus/count");
-      this.page.total = parseInt(busCountRes.data);
+    //获取线路总数量
+    async getRouteCount() {
+      const { data: routeCountRes } = await this.$axios.get("route/count");
+      this.page.total = parseInt(routeCountRes.data);
     },
 
     //处理页面大小发生变化的方法
     handleSizeChange(newSize) {
       this.page.pageSize = newSize;
       this.page.pageNumber = parseInt(this.page.total / newSize);
-      this.getBusListPage();
+      this.getRouteListPage();
     },
 
     //处理当前页码发生变化的方法
     handleCurrentChange(newPage) {
       this.page.pageNumber = newPage;
-      this.getBusListPage();
+      this.getRouteListPage();
     },
 
-    //通过Id删除公交
-    async deleteBusById(busId) {
-      const { data: deleteBusRes } = await this.$axios.delete(
-        "bus/remove/" + busId
+    //通过Id删除线路
+    async deleteRouteById(routeId) {
+      const { data: deleteRouteRes } = await this.$axios.delete(
+        "route/remove/" + routeId
       );
-      this.getBusListPage();
+      this.getRouteListPage();
       this.$message({
-        message: deleteBusRes.msg,
-        type: `${deleteBusRes.code !== 200 ? "error" : "success"}`,
+        message: deleteRouteRes.msg,
+        type: `${deleteRouteRes.code !== 200 ? "error" : "success"}`,
         center: true,
       });
     },
   },
   mounted() {
-    this.getBusListPage();
+    this.getRouteListPage();
   },
 };
 </script>
 
 <style lang="less">
-.busList {
+.routeList {
   .page {
     width: 100%;
     padding: 5px;

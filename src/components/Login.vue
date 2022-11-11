@@ -47,61 +47,61 @@
     />
 
     <!-- 登录表单盒子 -->
-    <div class="login_box" ref="loginBoxRef">
+    <div class="login_box">
       <div class="form">
         <div class="title">
           <span> 公交线路管理系统 </span>
         </div>
-          <!-- 登录 -->
-            <el-form
-              status-icon
-              :model="loginForm"
-              :rules="loginFormRules"
-              ref="loginFormRef"
-              :hide-required-asterisk="true"
-            >
-              <el-form-item prop="account">
-                <el-input
-                  v-model="loginForm.account"
-                  autocomplete="off"
-                  prefix-icon="el-icon-user"
-                  size="medium"
-                  clearable
-                  placeholder="请输入管理员账号"
-                  :maxlength="11"
-                  @keyup.enter.native="showValid"
-                />
-              </el-form-item>
-              <el-form-item prop="password">
-                <el-input
-                  v-model="loginForm.password"
-                  type="password"
-                  prefix-icon="el-icon-lock"
-                  autocomplete="off"
-                  clearable
-                  validate-event
-                  size="medium"
-                  placeholder="请输入您的密码"
-                  :maxlength="17"
-                  :show-password="true"
-                  @keyup.enter.native="showValid"
-                />
-              </el-form-item>
-              <el-form-item>
-                <div class="login-btn">
-                  <el-button
-                    type="primary"
-                    size="medium"
-                    round
-                    plain
-                    icon="el-icon-check"
-                    style="width: 95%"
-                    @click="showValid"
-                    >登录</el-button
-                  >
-                </div>
-              </el-form-item>
-            </el-form>
+        <!-- 登录 -->
+        <el-form
+          status-icon
+          :model="loginForm"
+          :rules="loginFormRules"
+          ref="loginFormRef"
+          :hide-required-asterisk="true"
+        >
+          <el-form-item prop="account">
+            <el-input
+              v-model="loginForm.account"
+              autocomplete="off"
+              prefix-icon="el-icon-user"
+              size="medium"
+              clearable
+              placeholder="请输入管理员账号"
+              :maxlength="11"
+              @keyup.enter.native="showValid"
+            />
+          </el-form-item>
+          <el-form-item prop="password">
+            <el-input
+              v-model="loginForm.password"
+              type="password"
+              prefix-icon="el-icon-lock"
+              autocomplete="off"
+              clearable
+              validate-event
+              size="medium"
+              placeholder="请输入您的密码"
+              :maxlength="17"
+              :show-password="true"
+              @keyup.enter.native="showValid"
+            />
+          </el-form-item>
+          <el-form-item>
+            <div class="login-btn">
+              <el-button
+                type="primary"
+                size="medium"
+                round
+                plain
+                icon="el-icon-check"
+                style="width: 95%"
+                @click="showValid"
+                >登录</el-button
+              >
+            </div>
+          </el-form-item>
+        </el-form>
       </div>
       <div class="btns">
         <el-checkbox v-model="autoLogin">7天免登录</el-checkbox>
@@ -157,7 +157,7 @@ export default {
         //登录权限有效时间
         var expire = this.autoLogin ? 60 * 60 * 24 * 7 : 2 * 60 * 60;
         //发起登录请求
-        const { data: loginRes } = await this.$http.post("admin/login", {
+        const { data: loginRes } = await this.$axios.post("admin/login", {
           account: this.loginForm.account,
           password: this.loginForm.password,
           expire,

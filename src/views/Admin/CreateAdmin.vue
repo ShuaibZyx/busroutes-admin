@@ -1,75 +1,82 @@
 <template>
-  <div class="createAdmin">
-    <el-page-header @back="$router.back()" content="创建管理员" />
-    <div class="common">
-      <div class="title">
-        <span>请输入管理员信息:</span>
-        <el-button type="primary" size="small" @click="createAdminFast">
-          快速添加
-        </el-button>
-      </div>
-      <el-form ref="form" :model="admin" :rules="adminRules" label-width="auto">
-        <el-form-item label="账号:" prop="account">
-          <el-input
-            v-model="admin.account"
-            size="small"
-            maxlength="11"
-            clearable
-            placeholder="账号"
-          />
-        </el-form-item>
-        <el-form-item label="登陆密码:" prop="password">
-          <el-input
-            v-model="admin.password"
-            size="small"
-            maxlength="17"
-            clearable
-            placeholder="密码"
-          />
-        </el-form-item>
-        <el-form-item label="电话号码:" prop="telephone">
-          <el-input
-            v-model="admin.telephone"
-            size="small"
-            maxlength="11"
-            clearable
-            placeholder="电话号码"
-          />
-        </el-form-item>
-        <el-form-item label="系统权限:" prop="power">
-          <el-select
-            v-model="admin.power"
-            filterable
-            size="small"
-            clearable
-            placeholder="分配权限"
-            style="width: 100%"
-          >
-            <el-option
-              v-for="item in adminPower"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+  <el-card shadow="never">
+    <div slot="header" class="cardHeader">
+      <el-page-header @back="$router.back()" content="创建管理员" />
+      <el-button type="primary" size="small" @click="createAdminFast">
+        快速添加
+      </el-button>
+    </div>
+    <div class="createAdmin">
+      <div class="common">
+        <div class="title">
+          <span>请输入管理员信息:</span>
+        </div>
+        <el-form
+          ref="form"
+          :model="admin"
+          :rules="adminRules"
+          label-width="auto"
+        >
+          <el-form-item label="账号:" prop="account">
+            <el-input
+              v-model="admin.account"
+              size="small"
+              maxlength="11"
+              clearable
+              placeholder="账号"
+            />
+          </el-form-item>
+          <el-form-item label="登陆密码:" prop="password">
+            <el-input
+              v-model="admin.password"
+              size="small"
+              maxlength="17"
+              clearable
+              placeholder="密码"
+            />
+          </el-form-item>
+          <el-form-item label="电话号码:" prop="telephone">
+            <el-input
+              v-model="admin.telephone"
+              size="small"
+              maxlength="11"
+              clearable
+              placeholder="电话号码"
+            />
+          </el-form-item>
+          <el-form-item label="系统权限:" prop="power">
+            <el-select
+              v-model="admin.power"
+              filterable
+              size="small"
+              clearable
+              placeholder="分配权限"
+              style="width: 100%"
             >
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div class="btns">
-        <el-button type="info" size="small" @click="$refs.form.resetFields()">
-          重置
-        </el-button>
-        <el-button type="primary" size="small" @click="createAdmin">
-          创建
-        </el-button>
+              <el-option
+                v-for="item in adminPower"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <div class="btns">
+          <el-button type="info" size="small" @click="$refs.form.resetFields()">
+            重置
+          </el-button>
+          <el-button type="primary" size="small" @click="createAdmin">
+            创建
+          </el-button>
+        </div>
       </div>
     </div>
-  </div>
+  </el-card>
 </template>
 
 <script>
-import router from "@/router";
-
 export default {
   name: "CreateAdmin",
   data() {
@@ -160,21 +167,23 @@ export default {
         center: true,
         closeOnClickModal: false,
         inputPlaceholder: "请输入管理员联系电话",
-      }).then(async ({ value }) => {
-        const { data: createAdminFastRes } = await this.$axios.post(
-          "admin/create/fast",
-          {
-            telephone: value,
-          }
-        );
-        this.$message({
-          center: true,
-          message: createAdminFastRes.msg,
-          type: `${createAdminFastRes.code !== 200 ? "error" : "success"}`,
-          duration: 0,
-          showClose: true,
-        });
-      });
+      })
+        .then(async ({ value }) => {
+          const { data: createAdminFastRes } = await this.$axios.post(
+            "admin/create/fast",
+            {
+              telephone: value,
+            }
+          );
+          this.$message({
+            center: true,
+            message: createAdminFastRes.msg,
+            type: `${createAdminFastRes.code !== 200 ? "error" : "success"}`,
+            duration: 0,
+            showClose: true,
+          });
+        })
+        .catch(() => {});
     },
 
     //判断用户输入的账号是否已经存在，保证电话号码的唯一性
@@ -192,9 +201,6 @@ export default {
 
 <style lang="less">
 .createAdmin {
-  width: 99%;
-  height: auto;
-  padding: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;

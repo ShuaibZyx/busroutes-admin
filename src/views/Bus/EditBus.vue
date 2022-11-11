@@ -1,60 +1,64 @@
 <template>
-  <div class="editBus">
-    <el-page-header @back="$router.back()" content="更新公交信息" />
-    <div class="common">
-      <div class="title">
-        <span>请输入新的公交信息:</span>
-      </div>
-      <el-form ref="form" :model="bus" :rules="busRules" label-width="auto">
-        <el-form-item label="公交名称:" prop="busName">
-          <el-input
-            v-model="bus.busName"
-            size="small"
-            maxlength="15"
-            clearable
-            placeholder="请输入公交名称"
-          />
-        </el-form-item>
-        <el-form-item label="所在城市:" prop="cityCode">
-          <el-cascader
-            style="width: 100%"
-            v-model="bus.cityCode"
-            :options="citys"
-            size="small"
-            filterable
-            clearable
-            :props="{ expandTrigger: 'hover' }"
-          />
-        </el-form-item>
-        <el-form-item label="公交类型:" prop="type">
-          <el-select
-            v-model="bus.type"
-            filterable
-            size="small"
-            clearable
-            placeholder="公交类型"
-            style="width: 100%"
-          >
-            <el-option
-              v-for="item in busType"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+  <el-card shadow="never">
+    <div slot="header" class="cardHeader">
+      <el-page-header @back="$router.back()" content="更新公交信息" />
+    </div>
+    <div class="editBus">
+      <div class="common">
+        <div class="title">
+          <span>请输入新的公交信息:</span>
+        </div>
+        <el-form ref="form" :model="bus" :rules="busRules" label-width="auto">
+          <el-form-item label="公交名称:" prop="busName">
+            <el-input
+              v-model="bus.busName"
+              size="small"
+              maxlength="15"
+              clearable
+              placeholder="请输入公交名称"
+            />
+          </el-form-item>
+          <el-form-item label="所在城市:" prop="cityCode">
+            <el-cascader
+              style="width: 100%"
+              v-model="bus.cityCode"
+              :options="citys"
+              size="small"
+              filterable
+              clearable
+              :props="{ expandTrigger: 'hover' }"
+            />
+          </el-form-item>
+          <el-form-item label="公交类型:" prop="type">
+            <el-select
+              v-model="bus.type"
+              filterable
+              size="small"
+              clearable
+              placeholder="公交类型"
+              style="width: 100%"
             >
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div class="btns">
-        <el-button type="info" size="small" @click="resetBusInfo">
-          重置
-        </el-button>
-        <el-button type="primary" size="small" @click="editBus">
-          更新
-        </el-button>
+              <el-option
+                v-for="item in busType"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <div class="btns">
+          <el-button type="info" size="small" @click="resetBusInfo">
+            重置
+          </el-button>
+          <el-button type="primary" size="small" @click="editBus">
+            更新
+          </el-button>
+        </div>
       </div>
     </div>
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -151,9 +155,6 @@ export default {
 
 <style lang="less">
 .editBus {
-  width: 99%;
-  height: auto;
-  padding: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;

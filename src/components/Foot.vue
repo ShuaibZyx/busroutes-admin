@@ -9,7 +9,6 @@ export default {
   name: "Foot",
 };
 </script>
-
 <style lang="less">
   .foot {
     width: 99%;

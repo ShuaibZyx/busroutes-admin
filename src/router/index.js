@@ -1,11 +1,13 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "../store/index";
 
 Vue.use(VueRouter);
 //通用组件
 const Home = () => import("../components/Home.vue");
 const Login = () => import("../components/Login.vue");
 const Index = () => import("../views/Index.vue");
+const Profile = () => import("../views/Profile.vue");
 //管理员组件
 const AdminList = () => import("../views/Admin/AdminList.vue");
 const CreateAdmin = () => import("../views/Admin/CreateAdmin.vue");
@@ -23,6 +25,19 @@ const EditBus = () => import("../views/Bus/EditBus.vue");
 const StationList = () => import("../views/Station/StationList.vue");
 const CreateStation = () => import("../views/Station/CreateStation.vue");
 const EditStation = () => import("../views/Station/EditStation.vue");
+//公告组件
+const NoticeList = () => import("../views/Notice/NoticeList.vue");
+const CreateNotice = () => import("../views/Notice/CreateNotice.vue");
+const NoticeDetail = () => import("../views/Notice/NoticeDetail.vue");
+const EditNotice = () => import("../views/Notice/EditNotice.vue");
+//线路组件
+const RouteList = () => import("../views/Route/RouteList.vue");
+const CreateRoute = () => import("../views/Route/CreateRoute.vue");
+const EditRoute = () => import("../views/Route/EditRoute.vue");
+const ManageRouteNode = () => import("../views/Route/ManageRouteNode.vue");
+//留言组件
+const IssueList = () => import("../views/Issue/IssueList.vue");
+const Message = () => import("../views/Issue/Message.vue");
 
 const originalPush = VueRouter.prototype.push;
 
@@ -44,6 +59,11 @@ const router = new VueRouter({
           path: "/index",
           component: Index,
           meta: { title: "总览" },
+        },
+        {
+          path: "/profile/:adminId",
+          component: Profile,
+          meta: { title: "我的信息" },
         },
         {
           path: "/admin",
@@ -104,17 +124,75 @@ const router = new VueRouter({
         {
           path: "/station",
           component: StationList,
-          meta: { title: "车站" },
+          meta: { title: "站点" },
           children: [
             {
               path: "/station/create",
               component: CreateStation,
-              meta: { title: "创建车站" },
+              meta: { title: "创建站点" },
             },
             {
               path: "/station/edit/:stationId",
               component: EditStation,
-              meta: { title: "更新车站信息" },
+              meta: { title: "更新站点信息" },
+            },
+          ],
+        },
+        {
+          path: "/notice",
+          component: NoticeList,
+          meta: { title: "公告" },
+          children: [
+            {
+              path: "/notice/create",
+              component: CreateNotice,
+              meta: { title: "创建公告" },
+            },
+            {
+              path: "/notice/detail/:noticeId",
+              component: NoticeDetail,
+              meta: { title: "公告详情" },
+            },
+            {
+              path: "/notice/edit/:noticeId",
+              component: EditNotice,
+              meta: { title: "更新公告" },
+            },
+          ],
+        },
+        {
+          path: "/busroute",
+          component: RouteList,
+          meta: { title: "线路" },
+          children: [
+            {
+              path: "/busroute/create",
+              component: CreateRoute,
+              meta: { title: "创建线路" },
+            },
+            {
+              path: "/busroute/edit/:routeId",
+              component: EditRoute,
+              meta: { title: "更新线路" },
+              children: [
+                {
+                  path: "/busroute/edit/nodeList/:routeId",
+                  component: ManageRouteNode,
+                  meta: { title: "管理节点" },
+                },
+              ],
+            },
+          ],
+        },
+        {
+          path: "/issue",
+          component: IssueList,
+          meta: { title: "留言" },
+          children: [
+            {
+              path: "/issue/message/:issueId",
+              component: Message,
+              meta: { title: "消息" },
             },
           ],
         },
@@ -129,8 +207,25 @@ router.beforeEach((to, from, next) => {
   const token = JSON.parse(window.sessionStorage.getItem("token"));
   if (to.path !== "/login") {
     if (token) {
-      //已经登录
-      next();
+      //登录成功
+      if (to.path.includes("admin")) {
+        if (store.state.currentAdminInfo.power === 3) {
+          next();
+        } else router.push(`${from.path}`);
+      } else if (to.path.includes("issue")) {
+        if (
+          store.state.currentAdminInfo.power === 1 ||
+          store.state.currentAdminInfo.power === 3
+        ) {
+          next();
+        } else router.push(`${from.path}`);
+      } else if (to.path.includes("notice")) {
+        if (store.state.currentAdminInfo.power === 3) {
+          next();
+        } else router.push(`${from.path}`);
+      } else {
+        next();
+      }
     } else {
       next("/login");
     }

@@ -1,5 +1,8 @@
 <template>
-  <div class="index">主页内容</div>
+  <el-card shadow="never">
+    <div slot="header" class="cardHeader"></div>
+    <div class="index">主页内容</div>
+  </el-card>
 </template>
 
 <script>
@@ -9,9 +12,5 @@ export default {
 </script>
 
 <style lang="less">
-.index {
-  width: 99%;
-  height: auto;
-  padding: 5px;
-}
+
 </style>

@@ -1,67 +1,79 @@
 <template>
-  <div class="editAdmin">
-    <el-page-header @back="$router.back()" content="更新管理员信息" />
-    <div class="common">
-      <div class="title">
-        <span>请输入新的管理员信息:</span>
-      </div>
-      <el-form ref="form" :model="admin" :rules="adminRules" label-width="auto">
-        <el-form-item label="账号:" prop="account">
-          <el-input
-            v-model="admin.account"
-            size="small"
-            maxlength="11"
-            clearable
-            placeholder="账号"
-          />
-        </el-form-item>
-        <el-form-item label="登陆密码:" prop="password">
-          <el-input
-            v-model="admin.password"
-            size="small"
-            maxlength="17"
-            clearable
-            placeholder="密码"
-          />
-        </el-form-item>
-        <el-form-item label="电话号码:" prop="telephone">
-          <el-input
-            v-model="admin.telephone"
-            size="small"
-            maxlength="11"
-            clearable
-            placeholder="电话号码"
-          />
-        </el-form-item>
-        <el-form-item label="系统权限:" prop="power">
-          <el-select
-            v-model="admin.power"
-            filterable
-            size="small"
-            clearable
-            placeholder="分配权限"
-            style="width: 100%"
-          >
-            <el-option
-              v-for="item in adminPower"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+  <el-card shadow="never">
+    <div slot="header" class="cardHeader">
+      <el-page-header @back="$router.back()" content="更新管理员信息" />
+      <el-button size="mini" type="primary" @click="resetAdminPassword"
+        >重置密码</el-button
+      >
+    </div>
+    <div class="editAdmin">
+      <div class="common">
+        <div class="title">
+          <span>请输入新的管理员信息:</span>
+        </div>
+        <el-form
+          ref="form"
+          :model="admin"
+          :rules="adminRules"
+          label-width="auto"
+        >
+          <el-form-item label="账号:" prop="account">
+            <el-input
+              v-model="admin.account"
+              size="small"
+              maxlength="11"
+              clearable
+              placeholder="账号"
+            />
+          </el-form-item>
+          <el-form-item label="登陆密码:" prop="password">
+            <el-input
+              v-model="admin.password"
+              size="small"
+              maxlength="17"
+              clearable
+              placeholder="密码"
+            />
+          </el-form-item>
+          <el-form-item label="电话号码:" prop="telephone">
+            <el-input
+              v-model="admin.telephone"
+              size="small"
+              maxlength="11"
+              clearable
+              placeholder="电话号码"
+            />
+          </el-form-item>
+          <el-form-item label="系统权限:" prop="power">
+            <el-select
+              v-model="admin.power"
+              filterable
+              size="small"
+              clearable
+              placeholder="分配权限"
+              style="width: 100%"
             >
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div class="btns">
-        <el-button type="info" size="small" @click="resetAdminInfo">
-          重置
-        </el-button>
-        <el-button type="primary" size="small" @click="editAdmin">
-          更新
-        </el-button>
+              <el-option
+                v-for="item in adminPower"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <div class="btns">
+          <el-button type="info" size="small" @click="resetAdminInfo">
+            重置
+          </el-button>
+          <el-button type="primary" size="small" @click="editAdmin">
+            更新
+          </el-button>
+        </div>
       </div>
     </div>
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -172,6 +184,18 @@ export default {
       );
       this.admin = adminInfo.data;
     },
+
+    //重置管理员密码
+    async resetAdminPassword() {
+      const { data: resetRes } = await this.$axios.put(
+        "admin/reset/password/" + this.adminId
+      );
+      this.$message({
+        message: resetRes.msg,
+        type: `${resetRes.code !== 200 ? "error" : "success"}`,
+        center: true,
+      });
+    },
   },
   mounted() {
     this.getAdminInfoById();
@@ -181,9 +205,6 @@ export default {
 
 <style lang="less">
 .editAdmin {
-  width: 99%;
-  height: auto;
-  padding: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;

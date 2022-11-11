@@ -1,74 +1,78 @@
 <template>
-  <div class="editUser">
-    <el-page-header @back="$router.back()" content="更新用户信息" />
-    <div class="common">
-      <div class="title">
-        <span>请输入新的用户信息:</span>
-        <el-button type="primary" size="small" @click="modifyUserPassword">
-          修改用户登录密码
-        </el-button>
-      </div>
-      <el-form ref="form" :model="user" :rules="userRules" label-width="auto">
-        <el-form-item label="用户昵称:" prop="nickname">
-          <el-input
-            v-model="user.nickname"
-            size="small"
-            maxlength="20"
-            clearable
-            placeholder="用户昵称"
-          />
-        </el-form-item>
-        <el-form-item label="用户性别:" prop="gender">
-          <el-radio-group v-model="user.gender">
-            <el-radio :label="0"><i class="el-icon-male"> 男</i></el-radio>
-            <el-radio :label="1"><i class="el-icon-female"> 女</i></el-radio>
-            <el-radio :label="2"
-              ><i class="el-icon-question"> 未知</i></el-radio
-            >
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="用户地址:" prop="cityCode">
-          <el-cascader
-            style="width: 100%"
-            v-model="user.cityCode"
-            :options="citys"
-            size="small"
-            filterable
-            clearable
-            :props="{ expandTrigger: 'hover' }"
-          />
-        </el-form-item>
-        <el-form-item label="出生日期:">
-          <el-date-picker
-            type="date"
-            placeholder="选择日期"
-            v-model="user.birthday"
-            format="yyyy 年 MM 月 dd 日"
-            value-format="yyyy-MM-dd"
-            size="small"
-            style="width: 100%"
-          />
-        </el-form-item>
-        <el-form-item label="用户邮箱:" prop="email">
-          <el-input
-            v-model="user.email"
-            type="email"
-            size="small"
-            clearable
-            placeholder="邮箱"
-          />
-        </el-form-item>
-      </el-form>
-      <div class="btns">
-        <el-button type="info" size="small" @click="resetUserInfo">
-          重置
-        </el-button>
-        <el-button type="primary" size="small" @click="editUser">
-          更新
-        </el-button>
+  <el-card shadow="never">
+    <div slot="header" class="cardHeader">
+      <el-page-header @back="$router.back()" content="更新用户信息" />
+      <el-button type="primary" size="small" @click="modifyUserPassword">
+        修改用户登录密码
+      </el-button>
+    </div>
+    <div class="editUser">
+      <div class="common">
+        <div class="title">
+          <span>请输入新的用户信息:</span>
+        </div>
+        <el-form ref="form" :model="user" :rules="userRules" label-width="auto">
+          <el-form-item label="用户昵称:" prop="nickname">
+            <el-input
+              v-model="user.nickname"
+              size="small"
+              maxlength="20"
+              clearable
+              placeholder="用户昵称"
+            />
+          </el-form-item>
+          <el-form-item label="用户性别:" prop="gender">
+            <el-radio-group v-model="user.gender">
+              <el-radio :label="0"><i class="el-icon-male"> 男</i></el-radio>
+              <el-radio :label="1"><i class="el-icon-female"> 女</i></el-radio>
+              <el-radio :label="2"
+                ><i class="el-icon-question"> 未知</i></el-radio
+              >
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="用户地址:" prop="cityCode">
+            <el-cascader
+              style="width: 100%"
+              v-model="user.cityCode"
+              :options="citys"
+              size="small"
+              filterable
+              clearable
+              :props="{ expandTrigger: 'hover' }"
+            />
+          </el-form-item>
+          <el-form-item label="出生日期:">
+            <el-date-picker
+              type="date"
+              placeholder="选择日期"
+              v-model="user.birthday"
+              format="yyyy 年 MM 月 dd 日"
+              value-format="yyyy-MM-dd"
+              size="small"
+              style="width: 100%"
+            />
+          </el-form-item>
+          <el-form-item label="用户邮箱:" prop="email">
+            <el-input
+              v-model="user.email"
+              type="email"
+              size="small"
+              clearable
+              placeholder="邮箱"
+            />
+          </el-form-item>
+        </el-form>
+        <div class="btns">
+          <el-button type="info" size="small" @click="resetUserInfo">
+            重置
+          </el-button>
+          <el-button type="primary" size="small" @click="editUser">
+            更新
+          </el-button>
+        </div>
       </div>
     </div>
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -77,7 +81,7 @@ export default {
   name: "EditUser",
   data() {
     return {
-      //管理员表单
+      //用户表单
       user: {
         telephone: "",
         nickname: "",
@@ -88,7 +92,7 @@ export default {
         cityCode: "",
         email: "",
       },
-      //创建管理员表单验证规则
+      //创建用户表单验证规则
       userRules: {
         password: [
           {
@@ -210,9 +214,6 @@ export default {
 
 <style lang="less">
 .editUser {
-  width: 99%;
-  height: auto;
-  padding: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -227,7 +228,6 @@ export default {
       justify-content: space-between;
       font-weight: bold;
       font-size: 1em;
-      margin-top: 10px;
     }
     .btns {
       display: flex;

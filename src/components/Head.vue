@@ -25,7 +25,9 @@
           <span>欢迎进入公交线路后台管理系统</span>
           <div>
             <span>当前角色-</span>
-            <span style="color: orange">{{ adminInfo.power | powerFormat }} </span>
+            <span style="color: orange"
+              >{{ adminInfo.power | powerFormat }}
+            </span>
           </div>
         </div>
       </span>
@@ -33,11 +35,30 @@
     <div class="operation">
       <div class="admin">
         <span style="margin-right: 10px">{{ adminInfo.telephone }}</span>
-        <el-avatar
-          size="medium"
-          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-        >
-        </el-avatar>
+        <el-dropdown>
+          <el-avatar size="medium" style="cursor: pointer">
+            <el-image
+              :src="
+                adminInfo.avatarFile
+                  ? adminInfo.avatarFile?.fileUrl
+                  : require('../assets/icons/women.png')
+              "
+            />
+          </el-avatar>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item v-if="!$route.path.includes('/profile')">
+              <span @click="$router.push('/profile/' + adminInfo.adminId)"
+                >我的信息</span
+              >
+            </el-dropdown-item>
+            <el-dropdown-item v-if="$route.path !== '/index'">
+              <span @click="$router.push('/index')">返回主页</span>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <span @click="logout">退出登录</span>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
       <div class="btns">
         <el-select
@@ -49,10 +70,12 @@
           filterable
           :default-first-option="true"
           placeholder="请选择功能"
+          @change="handleSelectMenu"
+          v-if="adminInfo.power === 3"
         >
           <el-option
-            :label="menu"
-            :value="menu"
+            :label="menu.label"
+            :value="menu.value"
             v-for="(menu, index) in menuSelect"
             :key="index"
           />
@@ -67,9 +90,35 @@ export default {
   name: "Head",
   data() {
     return {
-      role: "管理员",
       functionName: "",
-      menuSelect: ["用户", "公交", "站点", "线路", "留言", "公告"],
+      //可以选择的功能数组
+      menuSelect: [
+        {
+          label: "用户",
+          value: "/user",
+        },
+        {
+          label: "公交",
+          value: "/bus",
+        },
+        {
+          label: "站点",
+          value: "/station",
+        },
+        {
+          label: "线路",
+          value: "/busroute",
+        },
+        {
+          label: "留言",
+          value: "/issue",
+        },
+        {
+          label: "公告",
+          value: "/notice",
+        },
+      ],
+      //当前管理员对象
       adminInfo: {},
     };
   },
@@ -81,6 +130,25 @@ export default {
         "admin/info/token/" + token
       );
       this.adminInfo = adminInfoRes.data;
+      this.$store.commit("setCurrentAdminInfo", this.adminInfo);
+    },
+
+    //退出登录
+    logout() {
+      window.sessionStorage.removeItem("token");
+      this.$cookies.remove("token");
+      this.$router.push("/login");
+      this.$message({
+        message: "已退出登录",
+        type: "success",
+        center: true,
+        showClose: true,
+      });
+    },
+
+    //选中菜单栏的方法
+    handleSelectMenu(path) {
+      this.$router.push(`${path}`);
     },
   },
   created() {

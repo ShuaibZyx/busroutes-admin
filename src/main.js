@@ -11,7 +11,6 @@ import { v4 as uuid } from "uuid";
 import ElementUI from "element-ui";
 import "./plugins/element.js";
 import "./assets/css/global.less";
-// import "./assets/js/lineconnect.js";
 import citys from "./assets/js/citys";
 import lodash from "lodash";
 
@@ -107,6 +106,11 @@ Vue.filter("busTypeFormat", function (type) {
 //车站状态过滤器
 Vue.filter("stationStateFormat", function (state) {
   return state ? "可用" : "停用";
+});
+
+//留言状态过滤器
+Vue.filter("noticeStateFormat", function (state) {
+  return state ? "已发布" : "未发布";
 });
 
 //城市名称过滤器

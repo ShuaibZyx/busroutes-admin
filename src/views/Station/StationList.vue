@@ -1,6 +1,6 @@
 <template>
-  <div class="stationList" v-if="$route.path === '/station'">
-    <div class="operation">
+  <el-card shadow="never" v-if="$route.path === '/station'">
+    <div slot="header" class="cardHeader">
       <span class="title">站点列表</span>
       <el-button
         type="primary"
@@ -9,111 +9,116 @@
         >创建站点</el-button
       >
     </div>
-    <el-table
-      :data="stationList"
-      fit
-      border
-      stripe
-      :highlight-current-row="true"
-    >
-      <el-table-column type="index" width="50" align="center" />
-      <el-table-column label="站点名称" align="center">
-        <template v-slot="scope">
-          <el-tooltip
-            effect="light"
-            :content="'编号:' + scope.row.stationId.toString()"
-            placement="top"
-          >
-            <span>{{ scope.row.stationName }}</span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-      <el-table-column label="站点状态" align="center">
-        <template v-slot="scope">
-          {{ scope.row.state | stationStateFormat }}
-        </template>
-      </el-table-column>
-      <el-table-column label="所在城市" align="center">
-        <template v-slot="scope">
-          {{ scope.row.cityCode | cityFormat }}
-        </template>
-      </el-table-column>
-      <el-table-column label="创建时间" align="center">
-        <template v-slot="scope">
-          {{ scope.row.createTime | dateFormat }}
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="primary"
-            @click="$router.push(`/station/edit/${scope.row.stationId}`)"
-            >更新</el-button
-          >
-          <el-button
-            v-if="scope.row.state"
-            type="warning"
-            size="mini"
-            :disabled="switchStationId === scope.row.stationId"
-            @click="modifyStationState(scope.row.stationId, false)"
-          >
-            禁用
-          </el-button>
-          <el-button
-            v-else
-            type="success"
-            size="mini"
-            :disabled="switchStationId === scope.row.stationId"
-            @click="modifyStationState(scope.row.stationId, true)"
-          >
-            启用
-          </el-button>
-          <el-popconfirm
-            confirm-button-text="是滴"
-            cancel-button-text="点错了"
-            icon="el-icon-warning"
-            icon-color="red"
-            title="确定删除该站点?"
-            style="margin-left: 10px"
-            @confirm="deleteStationById(scope.row.stationId)"
-          >
-            <el-button slot="reference" size="mini" type="danger"
-              >删除</el-button
-            >
-          </el-popconfirm>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div class="page">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="page.pageNumber"
-        :page-sizes="[8, 12, 18]"
-        :page-size="page.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="page.total"
-        :hide-on-single-page="true"
+    <div class="stationList">
+      <div class="operation"></div>
+      <el-table
+        :data="stationList"
+        fit
+        border
+        stripe
+        :highlight-current-row="true"
       >
-      </el-pagination>
+        <el-table-column type="index" width="50" align="center" />
+        <el-table-column label="站点名称" align="center">
+          <template v-slot="scope">
+            <el-tooltip
+              effect="light"
+              :content="'编号:' + scope.row.stationId.toString()"
+              placement="top"
+            >
+              <span>{{ scope.row.stationName }}</span>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+        <el-table-column label="站点状态" align="center">
+          <template v-slot="scope">
+            {{ scope.row.state | stationStateFormat }}
+          </template>
+        </el-table-column>
+        <el-table-column label="所在城市" align="center">
+          <template v-slot="scope">
+            {{ scope.row.cityCode | cityFormat }}
+          </template>
+        </el-table-column>
+        <el-table-column label="创建时间" align="center">
+          <template v-slot="scope">
+            {{ scope.row.createTime | dateFormat }}
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="$router.push(`/station/edit/${scope.row.stationId}`)"
+              >更新</el-button
+            >
+            <el-button
+              v-if="scope.row.state"
+              type="warning"
+              size="mini"
+              :disabled="switchStationId === scope.row.stationId"
+              @click="modifyStationState(scope.row.stationId, false)"
+            >
+              禁用
+            </el-button>
+            <el-button
+              v-else
+              type="success"
+              size="mini"
+              :disabled="switchStationId === scope.row.stationId"
+              @click="modifyStationState(scope.row.stationId, true)"
+            >
+              启用
+            </el-button>
+            <el-popconfirm
+              confirm-button-text="是滴"
+              cancel-button-text="点错了"
+              icon="el-icon-warning"
+              icon-color="red"
+              title="确定删除该站点?"
+              style="margin-left: 10px"
+              @confirm="deleteStationById(scope.row.stationId)"
+            >
+              <el-button slot="reference" size="mini" type="danger"
+                >删除</el-button
+              >
+            </el-popconfirm>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="page">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="page.pageNumber"
+          :page-sizes="[8, 12, 18]"
+          :page-size="page.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="page.total"
+          :hide-on-single-page="true"
+        >
+        </el-pagination>
+      </div>
     </div>
-    <router-view />
-  </div>
+  </el-card>
   <router-view v-else />
 </template>
 
 <script>
 export default {
-  name: "stationList",
+  name: "StationList",
   data() {
     return {
+      //站点信息列表
       stationList: [],
+      //分页对象
       page: {
         pageNumber: 1,
         pageSize: 8,
         total: 0,
       },
+      //当前切换的站点信息编号
       switchStationId: "",
     };
   },
@@ -200,9 +205,6 @@ export default {
 
 <style lang="less">
 .stationList {
-  width: 99%;
-  height: auto;
-  padding: 5px;
   .page {
     width: 100%;
     padding: 5px;
@@ -211,19 +213,6 @@ export default {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-  }
-  .operation {
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    .title {
-      font-family: 黑体;
-      font-size: 1.2em;
-    }
   }
 }
 </style>

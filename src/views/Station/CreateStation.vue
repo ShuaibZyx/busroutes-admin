@@ -1,65 +1,69 @@
 <template>
-  <div class="createStation">
-    <el-page-header @back="$router.back()" content="创建站点" />
-    <div class="common">
-      <div class="title">
-        <span>请输入站点信息:</span>
-      </div>
-      <el-form
-        ref="form"
-        :model="station"
-        :rules="stationRules"
-        label-width="auto"
-      >
-        <el-form-item label="站点名称:" prop="stationName">
-          <el-input
-            v-model="station.stationName"
-            size="small"
-            maxlength="30"
-            clearable
-            placeholder="请输入站点名称"
-          />
-        </el-form-item>
-        <el-form-item label="所在城市:" prop="cityCode">
-          <el-cascader
-            style="width: 100%"
-            v-model="station.cityCode"
-            :options="citys"
-            size="small"
-            filterable
-            clearable
-            :props="{ expandTrigger: 'hover' }"
-          />
-        </el-form-item>
-        <el-form-item label="站点状态:" prop="state">
-          <el-select
-            v-model="station.state"
-            filterable
-            size="small"
-            clearable
-            placeholder="站点类型"
-            style="width: 100%"
-          >
-            <el-option
-              v-for="item in stationState"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+  <el-card shadow="never">
+    <div slot="header" class="cardHeader">
+      <el-page-header @back="$router.back()" content="创建站点" />
+    </div>
+    <div class="createStation">
+      <div class="common">
+        <div class="title">
+          <span>请输入站点信息:</span>
+        </div>
+        <el-form
+          ref="form"
+          :model="station"
+          :rules="stationRules"
+          label-width="auto"
+        >
+          <el-form-item label="站点名称:" prop="stationName">
+            <el-input
+              v-model="station.stationName"
+              size="small"
+              maxlength="30"
+              clearable
+              placeholder="请输入站点名称"
+            />
+          </el-form-item>
+          <el-form-item label="所在城市:" prop="cityCode">
+            <el-cascader
+              style="width: 100%"
+              v-model="station.cityCode"
+              :options="citys"
+              size="small"
+              filterable
+              clearable
+              :props="{ expandTrigger: 'hover' }"
+            />
+          </el-form-item>
+          <el-form-item label="站点状态:" prop="state">
+            <el-select
+              v-model="station.state"
+              filterable
+              size="small"
+              clearable
+              placeholder="站点类型"
+              style="width: 100%"
             >
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div class="btns">
-        <el-button type="info" size="small" @click="$refs.form.resetFields()">
-          重置
-        </el-button>
-        <el-button type="primary" size="small" @click="createStation">
-          创建
-        </el-button>
+              <el-option
+                v-for="item in stationState"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <div class="btns">
+          <el-button type="info" size="small" @click="$refs.form.resetFields()">
+            重置
+          </el-button>
+          <el-button type="primary" size="small" @click="createStation">
+            创建
+          </el-button>
+        </div>
       </div>
     </div>
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -132,9 +136,6 @@ export default {
 
 <style lang="less">
 .createStation {
-  width: 99%;
-  height: auto;
-  padding: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -149,7 +150,6 @@ export default {
       justify-content: space-between;
       font-weight: bold;
       font-size: 1em;
-      margin-top: 10px;
     }
     .btns {
       display: flex;

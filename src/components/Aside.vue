@@ -17,7 +17,7 @@
         background-color="transparent"
         text-color="black"
         :collapse="iscollapse"
-        active-text-color="black"
+        active-text-color="#409EFF"
         :router="true"
       >
         <el-menu-item index="/index">
@@ -31,31 +31,31 @@
             <i class="el-icon-menu"></i>
             <span slot="title">菜单</span>
           </template>
-          <el-menu-item index="/admin">
+          <el-menu-item index="/admin" v-if="adminInfo.power === 3">
             <i class="el-icon-s-grid"></i>
             <span slot="title">管理员</span>
           </el-menu-item>
-          <el-menu-item index="/user">
+          <el-menu-item index="/user" v-if="adminInfo.power >= 2">
             <i class="el-icon-user"></i>
             <span slot="title">用户</span>
           </el-menu-item>
-          <el-menu-item index="/bus">
+          <el-menu-item index="/bus" v-if="adminInfo.power >= 2">
             <i class="el-icon-truck"></i>
             <span slot="title"> 公交</span>
           </el-menu-item>
-          <el-menu-item index="/station">
-            <i class="el-icon-menu"></i>
+          <el-menu-item index="/station" v-if="adminInfo.power >= 2">
+            <i class="el-icon-guide"></i>
             <span slot="title">站点</span>
           </el-menu-item>
-          <el-menu-item index="/busroute">
+          <el-menu-item index="/busroute" v-if="adminInfo.power >= 2">
             <i class="el-icon-document"></i>
             <span slot="title">线路</span>
           </el-menu-item>
-          <el-menu-item index="/issue">
+          <el-menu-item index="/issue" v-if="adminInfo.power >= 1">
             <i class="el-icon-message"></i>
             <span slot="title">留言</span>
           </el-menu-item>
-          <el-menu-item index="/notice">
+          <el-menu-item index="/notice" v-if="adminInfo.power === 3">
             <i class="el-icon-bell"></i>
             <span slot="title">公告</span>
           </el-menu-item>
@@ -70,12 +70,14 @@
 <script>
 export default {
   name: "Aside",
-  data() {
-    return {};
-  },
   computed: {
+    //是否折叠
     iscollapse() {
       return this.$store.state.iscollapse;
+    },
+    //当前管理员信息
+    adminInfo() {
+      return this.$store.state.currentAdminInfo;
     },
   },
 };
