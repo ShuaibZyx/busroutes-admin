@@ -165,7 +165,7 @@ export default {
         "userInfo.nickname": [
           { required: true, message: "请输入用户昵称", trigger: "blur" },
           {
-            pattern: /^[a-zA-Z0-9\u4e00-\u9fa5]{1,20}$/,
+            pattern: /^[a-zA-Z0-9-\u4e00-\u9fa5]{1,20}$/,
             message: "长度在 1 到 20 个数字,中文或者字母",
             trigger: ["blur", "change"],
           },

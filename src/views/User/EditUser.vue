@@ -109,7 +109,7 @@ export default {
         nickname: [
           { required: true, message: "请输入用户昵称", trigger: "blur" },
           {
-            pattern: /^[a-zA-Z0-9\u4e00-\u9fa5]{1,20}$/,
+            pattern: /^[a-zA-Z0-9-\u4e00-\u9fa5]{1,20}$/,
             message: "长度在 1 到 20 个数字或者字母",
             trigger: ["blur", "change"],
           },
@@ -158,7 +158,7 @@ export default {
       this.getUserInfoById();
     },
 
-    //普通方式创建用户
+    //更新用户信息
     editUser() {
       this.$refs.form.validate(async (valid) => {
         if (!valid) return;

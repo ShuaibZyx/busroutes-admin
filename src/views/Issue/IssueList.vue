@@ -5,7 +5,7 @@
       <el-button type="text" 
         >未处理留言:{{
           issueList.filter((issue) => {
-            return issue.state === 2;
+            return issue.state != 2;
           }).length
         }}条</el-button
       >

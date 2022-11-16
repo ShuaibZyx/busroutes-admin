@@ -18,7 +18,7 @@
         :highlight-current-row="true"
       >
         <el-table-column type="index" width="50" align="center" />
-        <el-table-column label="线路公交" align="center">
+        <el-table-column label="线路公交" align="center" width="100">
           <template v-slot="scope">
             <el-tooltip
               effect="light"
@@ -37,7 +37,7 @@
             {{ scope.row.bus?.cityCode | cityFormat }}
           </template>
         </el-table-column>
-        <el-table-column label="运行时间" align="center">
+        <el-table-column label="运行时间" align="center" width="150">
           <template v-slot="scope">
             {{ scope.row.timeRange }}
           </template>

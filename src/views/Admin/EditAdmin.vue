@@ -81,6 +81,7 @@ export default {
   name: "EditAdmin",
   data() {
     return {
+      originalAdmin:{},
       //当前管理员编号
       adminId: "",
       //管理员表单
@@ -183,6 +184,7 @@ export default {
         "admin/info/id/" + this.adminId
       );
       this.admin = adminInfo.data;
+      this.originalAdmin = adminInfo.data;
     },
 
     //重置管理员密码

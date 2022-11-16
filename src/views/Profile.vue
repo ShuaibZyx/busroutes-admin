@@ -2,7 +2,7 @@
   <el-card shadow="never">
     <div slot="header" class="cardHeader">
       <el-page-header @back="$router.back()" content="我的信息" />
-      <el-button type="text" size="small" @click="resetAdminInfo">
+      <el-button type="text" size="medium" @click="resetAdminInfo">
         重置信息
       </el-button>
     </div>

@@ -14,6 +14,24 @@
         >
           <el-descriptions-item>
             <template slot="label">
+              <i class="el-icon-picture-outline" />
+              用户编号
+            </template>
+            <el-image
+              :src="
+                user.avatarFile?.fileUrl ||
+                require('../../assets/images/cabbage.jpg')
+              "
+              :preview-src-list="userAvatar"
+              style="width: 60px"
+            >
+              <div slot="error">
+                <el-image :src="require('../../assets/images/cabbage.jpg')" />
+              </div>
+            </el-image>
+          </el-descriptions-item>
+          <el-descriptions-item>
+            <template slot="label">
               <i class="el-icon-zoom-out" />
               用户编号
             </template>
@@ -83,6 +101,8 @@ export default {
   data() {
     return {
       user: {},
+      //用户头像预览
+      userAvatar: [],
     };
   },
   computed: {
@@ -92,10 +112,12 @@ export default {
   },
   methods: {
     async getUserInfoById() {
+      this.userAvatar = [];
       const { data: userRes } = await this.$axios.get(
         "user/info/" + this.userId
       );
       this.user = userRes.data;
+      this.userAvatar.push(userRes.data.avatarFile.fileUrl);
     },
   },
   mounted() {

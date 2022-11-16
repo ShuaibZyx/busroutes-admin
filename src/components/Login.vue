@@ -162,14 +162,16 @@ export default {
           password: this.loginForm.password,
           expire,
         });
-        //将返回的token存入session
-        const token = loginRes.data.token;
-        window.sessionStorage.setItem("token", JSON.stringify(token));
-        //将token值存入cookie用户实现7天免登录
-        if (this.autoLogin)
-          this.$cookies.set("token", JSON.stringify(token), "7d");
-        //跳转路由
-        this.$router.push("/home");
+        if (loginRes.code === 200) {
+          //将返回的token存入session
+          const token = loginRes.data.token;
+          window.sessionStorage.setItem("token", JSON.stringify(token));
+          //将token值存入cookie用户实现7天免登录
+          if (this.autoLogin)
+            this.$cookies.set("token", JSON.stringify(token), "7d");
+          //跳转路由
+          this.$router.push("/home");
+        }
         //提示用户登录状态
         this.$message({
           message: loginRes.msg,

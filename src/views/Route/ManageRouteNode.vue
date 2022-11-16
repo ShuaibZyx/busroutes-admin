@@ -127,7 +127,7 @@
         custom-class="addRouteNodeDialog"
       >
         <div slot="title" class="icon_title">
-          <i class="el-icon-plus"></i>
+          <i class="el-icon-plus" />
           <span> 添加节点</span>
         </div>
         <el-form
@@ -246,13 +246,6 @@ export default {
           {
             required: true,
             message: "站点信息不可为空",
-            trigger: ["blur", "change"],
-          },
-        ],
-        nextStationId: [
-          {
-            required: true,
-            message: "下一信息不可为空",
             trigger: ["blur", "change"],
           },
         ],

@@ -88,7 +88,7 @@ export default {
             trigger: "blur",
           },
           {
-            pattern: /^[a-zA-Z0-9\u4e00-\u9fa5]{1,100}$/,
+            pattern: /^[a-zA-Z0-9-\u4e00-\u9fa5]{1,100}$/,
             message: "长度在 1 到 100 个数字,中文或字母",
             trigger: blur,
           },
