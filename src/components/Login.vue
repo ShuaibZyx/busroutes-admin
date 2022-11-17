@@ -165,10 +165,10 @@ export default {
         if (loginRes.code === 200) {
           //将返回的token存入session
           const token = loginRes.data.token;
-          window.sessionStorage.setItem("token", JSON.stringify(token));
+          window.sessionStorage.setItem("admin_token", JSON.stringify(token));
           //将token值存入cookie用户实现7天免登录
           if (this.autoLogin)
-            this.$cookies.set("token", JSON.stringify(token), "7d");
+            this.$cookies.set("admin_token", JSON.stringify(token), "7d");
           //跳转路由
           this.$router.push("/home");
         }
@@ -204,9 +204,9 @@ export default {
     },
   },
   mounted() {
-    const token = JSON.parse(this.$cookies.get("token"));
+    const token = JSON.parse(this.$cookies.get("admin_token"));
     if (token) {
-      window.sessionStorage.setItem("token", JSON.stringify(token));
+      window.sessionStorage.setItem("admin_token", JSON.stringify(token));
       this.$router.push("/home");
     }
   },

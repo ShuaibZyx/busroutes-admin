@@ -125,7 +125,7 @@ export default {
   methods: {
     //获取当前登录的管理员信息
     async getAdminInfoByToken() {
-      const token = JSON.parse(window.sessionStorage.getItem("token"));
+      const token = JSON.parse(window.sessionStorage.getItem("admin_token"));
       const { data: adminInfoRes } = await this.$axios.get(
         "admin/info/token/" + token
       );

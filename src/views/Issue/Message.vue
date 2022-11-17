@@ -138,11 +138,22 @@ export default {
       },
       //预览消息框可见性
       previewMessageVisiable: false,
+      //webSocket连接对象
+      webSocket: null,
     };
   },
   computed: {
+    //留言Id
     issueId() {
       return this.$route.params.issueId;
+    },
+    //wenSocket地址
+    webSocketUrl() {
+      return this.$store.state.webSocketUrl;
+    },
+    //当前管理员
+    adminInfo() {
+      return this.$store.state.currentAdminInfo;
     },
   },
   methods: {
@@ -173,6 +184,13 @@ export default {
       if (sendMeassageRes.code === 200) {
         this.getIssueInfoById();
         this.message.content = "";
+        var messageObj = {
+          receiver: this.issueInfo.createrId,
+          message: this.message.content,
+        };
+        if (this.webSocket !== null)
+          this.webSocket.send(JSON.stringify(messageObj));
+        else this.openWebSocket();
       }
       this.$message({
         message: sendMeassageRes.msg,
@@ -195,9 +213,62 @@ export default {
         showClose: true,
       });
     },
+
+    //连接websocket并开启会话
+    openWebSocket() {
+      if (!this.issueInfo.state === 1) return;
+      this.webSocket = new WebSocket(
+        (this.webSocketUrl + this.adminInfo.adminId).toString()
+      );
+      if (this.webSocket !== null) {
+        //连接成功方法
+        this.webSocket.onopen = () => {
+          this.$message({
+            message: "会话连接成功!",
+            type: "success",
+            center: true,
+            duration: 1000,
+            showClose: true,
+          });
+        };
+        //接收到消息的回调方法
+        this.webSocket.onmessage = () => {
+          this.getIssueInfoById();
+        };
+        this.webSocket.onclose = () => {
+          this.$message({
+            message: "会话连接已关闭!",
+            type: "warning",
+            center: true,
+            duration: 1000,
+            showClose: true,
+          });
+        };
+        //连接出错方法
+        this.webSocket.onerror = () => {
+          if (this.issueInfo.state === 1) {
+            setInterval(() => {
+              this.openWebSocket();
+            }, 3000);
+          }
+          this.$message({
+            message: "会话连接出现错误!",
+            type: "danger",
+            center: true,
+            duration: 1000,
+            showClose: true,
+          });
+        };
+      }
+    },
   },
   mounted() {
     this.getIssueInfoById();
+    if (this.webSocket === null) this.openWebSocket();
+    //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+    window.onbeforeunload = () => {
+      if (this.webSocket !== null) this.webSocket.close();
+    };
   },
 };
 </script>
@@ -232,7 +303,7 @@ export default {
     .record {
       padding: 20px;
       height: 500px;
-      background-image: linear-gradient(-225deg, #FFFEFF 0%, #D7FFFE 100%);
+      background-image: linear-gradient(-225deg, #fffeff 0%, #d7fffe 100%);
       border: rgb(218, 215, 215) 1px solid;
       border-radius: 10px;
       overflow-x: hidden;

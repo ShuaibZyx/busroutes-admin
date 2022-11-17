@@ -204,7 +204,7 @@ const router = new VueRouter({
 // 挂载路由前置守卫
 router.beforeEach((to, from, next) => {
   //首先判断用户是否已经登录
-  const token = JSON.parse(window.sessionStorage.getItem("token"));
+  const token = JSON.parse(window.sessionStorage.getItem("admin_token"));
   if (to.path !== "/login") {
     if (token) {
       //登录成功

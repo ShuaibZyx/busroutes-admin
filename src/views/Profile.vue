@@ -161,7 +161,7 @@ export default {
     },
     //token
     token() {
-      return JSON.parse(window.sessionStorage.getItem("token"));
+      return JSON.parse(window.sessionStorage.getItem("admin_token"));
     },
     //不同类型的可上传文件列表
     uploadFileTypeLimits() {
