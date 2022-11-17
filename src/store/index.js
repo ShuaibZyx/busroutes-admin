@@ -28,7 +28,7 @@ export default new Vuex.Store({
         //通用后端地址
         baseUrl: "http://localhost:3008/",
         //socket后端地址
-        webSocketUrl:"ws://localhost:3008/websocket/",
+        webSocketUrl:"ws://101.42.172.82:3008/websocket/",
         //文件上传的类型限制
         uploadFileTypeLimits: {
           box: ".c, .cpp, .cs, .css, .excel, .exe, .html, .java, .jif, .jpeg, .jpg, .png, .js, .md, .mp3, .mp4, .php, .png, .ppt , .pptx, .ps, .ps1, .py, .rar, .sql, .txt, .vue, .webp, .xml, .zip, .pdf, .doc, .docx, .xls, .xlsx",
