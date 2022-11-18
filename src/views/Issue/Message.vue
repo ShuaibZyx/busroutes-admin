@@ -262,6 +262,9 @@ export default {
       }
     },
   },
+  beforeDestroy() {
+    if (this.webSocket !== null) this.webSocket.close();
+  },
   mounted() {
     this.getIssueInfoById();
     if (this.webSocket === null) this.openWebSocket();

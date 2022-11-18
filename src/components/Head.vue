@@ -135,8 +135,8 @@ export default {
 
     //退出登录
     logout() {
-      window.sessionStorage.removeItem("token");
-      this.$cookies.remove("token");
+      window.sessionStorage.removeItem("admin_token");
+      this.$cookies.remove("admin_token");
       this.$router.push("/login");
       this.$message({
         message: "已退出登录",

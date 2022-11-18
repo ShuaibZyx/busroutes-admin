@@ -3,7 +3,7 @@
     <div class="login_bg" />
     <!--github小猫咪-->
     <a
-      href="https://github.com/ShuaibZyx/garment_manager"
+      href="https://github.com/ShuaibZyx/busroutes-admin"
       class="github-corner"
       target="_blank"
       title="Follow me on GitHub"

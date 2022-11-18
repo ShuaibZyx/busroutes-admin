@@ -99,7 +99,7 @@ export default {
       route: {
         busId: "",
         cost: 1,
-        timeRange: [],
+        timeRange: ["07:00:00", "20:30:00"],
         busInterval: 5,
         isNight: false,
         isCircle: false,

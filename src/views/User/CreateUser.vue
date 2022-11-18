@@ -257,7 +257,7 @@ export default {
     //判断用户输入的账号是否已经存在，保证电话号码的唯一性
     async userAccountIsExist(rule, value, callback) {
       const { data: existRes } = await this.$axios.get(
-        "user/exist/" + this.user.account
+        "user/register/exist/" + this.user.account
       );
       if (existRes.data) {
         callback(new Error("该账号已被注册"));
