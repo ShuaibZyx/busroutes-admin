@@ -81,7 +81,7 @@ export default {
   name: "EditAdmin",
   data() {
     return {
-      originalAdmin:{},
+      originalAdmin: {},
       //当前管理员编号
       adminId: "",
       //管理员表单
@@ -174,6 +174,8 @@ export default {
       );
       if (existRes.data) {
         callback(new Error("该账号已被注册"));
+      } else {
+        callback();
       }
     },
 

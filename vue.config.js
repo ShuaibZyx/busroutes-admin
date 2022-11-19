@@ -8,7 +8,7 @@ module.exports = defineConfig({
     https: false,
     proxy: {
       "/api": {
-        target: "http://localhost:3008/", //服务端的接口地址
+        target: "http://101.42.172.82:3008/", //服务端的接口地址
         ws: true,
         changeOrigin: true, //开启跨域
         pathRewrite: {

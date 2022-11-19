@@ -18,7 +18,7 @@
             }}({{
               Math.round(
                 (noticeRead.viewCount / noticeRead.userCount) * 10000
-              ) / 100.0
+              ) / 100.0 || 0
             }}%)</span
           >
           <span class="item"

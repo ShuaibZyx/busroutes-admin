@@ -2,7 +2,7 @@
   <el-card shadow="never" v-if="$route.path === '/issue'">
     <div slot="header" class="cardHeader">
       <span>用户留言</span>
-      <el-button type="text" 
+      <el-button type="text"
         >未处理留言:{{
           issueList.filter((issue) => {
             return issue.state != 2;
@@ -98,7 +98,9 @@
               >由编号为<span style="color: green"> {{ issue.adminId }} </span
               >业务员解决</span
             >
-            <span>留言具体信息: {{ issue.description }}</span>
+            <div class="ql-container ql-snow preview">
+              <div class="ql-editor" v-html="issue.description" />
+            </div>
           </div>
         </el-collapse-item>
       </el-collapse>
@@ -121,6 +123,7 @@
 </template>
 
 <script>
+import "../../assets/css/quill.snow.css";
 export default {
   name: "IssueList",
   data() {
@@ -230,6 +233,9 @@ export default {
       flex-direction: column;
       justify-content: flex-start;
       align-items: flex-start;
+    }
+    .preview {
+      width: 100%;
     }
   }
 }

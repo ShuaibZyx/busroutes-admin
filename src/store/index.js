@@ -26,7 +26,7 @@ export default new Vuex.Store({
         //当前管理员信息
         currentAdminInfo: {},
         //通用后端地址
-        baseUrl: "http://localhost:3008/",
+        baseUrl: "http://101.42.172.82:3008/",
         //socket后端地址
         webSocketUrl:"ws://101.42.172.82:3008/websocket/",
         //文件上传的类型限制

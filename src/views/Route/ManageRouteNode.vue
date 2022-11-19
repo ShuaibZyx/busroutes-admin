@@ -138,7 +138,7 @@
         >
           <el-form-item label="站点信息:" prop="stationId">
             <el-autocomplete
-              placeholder="公交名称"
+              placeholder="站点名称"
               v-model="currentStationQueryInfo"
               :fetch-suggestions="searchStationSuggest"
               size="small"
@@ -153,9 +153,9 @@
               <i class="el-icon-guide" slot="prefix" />
             </el-autocomplete>
           </el-form-item>
-          <el-form-item label="下一站:" prop="nextStationId">
+          <el-form-item label="下一站:">
             <el-autocomplete
-              placeholder="公交名称"
+              placeholder="站点名称"
               v-model="nextStationQueryInfo"
               :fetch-suggestions="searchStationSuggest"
               size="small"
@@ -292,6 +292,8 @@ export default {
         originalArr.push(nodeList[q].sequence);
       }
       this.routeNodeForm.sequence = originalArr[originalArr.length - 1] + 1;
+      if (window.isNaN(originalArr[originalArr.length - 1] + 1))
+        this.routeNodeForm.sequence = 0;
       return originalArr;
     },
 
@@ -331,7 +333,8 @@ export default {
       const { data: stationListRes } = await this.$axios.get("station/search", {
         params: {
           stationName: queryString,
-          cityCode: this.route.bus?.cityCode,
+          cityCode: this.route?.bus?.cityCode,
+          routeId: this.routeId,
         },
       });
       //如果获取搜索条件成功，则将条件名推入下拉框数组中
@@ -365,6 +368,7 @@ export default {
     resetAddRouteNodeForm() {
       this.currentStationQueryInfo = "";
       this.nextStationQueryInfo = "";
+      Object.keys(this.routeNodeForm).forEach(key => (this.routeNodeForm[key] = ''));
       this.$refs.addRouteNodeFormRef.resetFields();
     },
 
@@ -382,10 +386,8 @@ export default {
                 }`
             )
           );
-        } else {
-          callback();
-        }
-      }
+        } else callback();
+      } else callback();
     },
 
     //添加一个站点
@@ -467,10 +469,8 @@ export default {
                   0
                 }`
               );
-            }
-          } else {
-            return true;
-          }
+            } else callback();
+          } else callback();
         },
         inputErrorMessage: "相对次序无效",
         center: true,

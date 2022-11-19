@@ -219,6 +219,7 @@ export default {
         this.$message({
           message: createUserRes.msg,
           type: `${createUserRes.code !== 200 ? "error" : "success"}`,
+          duration: 1000,
           center: true,
         });
       });
@@ -247,7 +248,7 @@ export default {
             center: true,
             message: createuserFastRes.msg,
             type: `${createuserFastRes.code !== 200 ? "error" : "success"}`,
-            duration: `${createuserFastRes.code !== 200 ? 1500 : 0}`,
+            duration: `${createuserFastRes.code !== 200 ? 0 : 1500}`,
             showClose: true,
           });
         })
