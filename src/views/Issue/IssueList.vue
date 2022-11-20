@@ -72,6 +72,7 @@
                   title="永久删除该留言?"
                   style="margin-left: 10px"
                   v-if="issue.state === 2 && adminInfo.power === 3"
+                  @confirm="deleteIssueById(issue.issueId)"
                 >
                   <el-button
                     type="text"
@@ -193,6 +194,20 @@ export default {
         message: takeRes.msg,
         type: `${takeRes.code !== 200 ? "error" : "success"}`,
         center: true,
+      });
+    },
+
+    //删除一条留言
+    async deleteIssueById(issueId) {
+      const { data: deleteIssueRes } = await this.$axios.delete(
+        "issue/delete/" + issueId
+      );
+      this.getIssueListPage()
+      this.$message({
+        message: deleteIssueRes.msg,
+        type: `${deleteIssueRes.code !== 200 ? "error" : "success"}`,
+        center: true,
+        showCloseL: true,
       });
     },
   },

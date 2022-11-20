@@ -169,7 +169,7 @@ export default {
     },
   },
   methods: {
-    //普通方式创建管理员
+    //更新管理员信息
     editAdmin() {
       this.$refs.form.validate(async (valid) => {
         if (!valid) return;
@@ -193,7 +193,7 @@ export default {
       this.$store.commit("setCurrentAdminInfo", this.admin);
     },
 
-    //判断用户输入的账号是否已经存在，保证电话号码的唯一性
+    //判断用户输入的账号是否已经存在，保证唯一性
     async adminAccountIsExist(rule, value, callback) {
       if (this.originalAccount === this.admin.account) return;
       const { data: existRes } = await this.$axios.get(
